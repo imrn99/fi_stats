@@ -6,3 +6,7 @@ of [Fastiron], a Monte-Carlo particle transport code written in Rust.
 
 
 [Fastiron]: https://github.com/cea-hpc/fastiron
+
+## References
+
+- gnuplot heatmap [examples][https://gnuplot.sourceforge.net/demo/heatmaps.html]

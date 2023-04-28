@@ -1,8 +1,12 @@
 use std::io::{self, stdout, Write};
 
-use stats::io_utils::{read_tallies, read_timers};
+use stats::{
+    io_utils::{read_tallies, read_timers},
+    mapping,
+};
 
 fn main() {
+    // Input handling
     let mut tallies_input = String::new();
     let mut timers_input = String::new();
 
@@ -25,8 +29,20 @@ fn main() {
     println!("Timers file: \"{}\"", timers_input);
 
     let tallies_data = read_tallies(&tallies_input);
-    let timers_data = read_timers(&timers_input);
+    //let timers_data = read_timers(&timers_input);
 
-    println!("{tallies_data:#?}");
-    println!("{timers_data:#?}");
+    // Correlation analysis
+    let tracking_res = mapping::build_tracking_results(&tallies_data);
+    let popsync_res = mapping::build_popsync_results(&tallies_data);
+
+    print_tracking_results(&tracking_res);
+    print_popsync_results(&popsync_res);
+}
+
+pub fn print_tracking_results(tracking_res: &[f64]) {
+    todo!()
+}
+
+pub fn print_popsync_results(popsync_res: &[f64]) {
+    todo!()
 }

@@ -1,13 +1,18 @@
+use crate::variables::FiniteDiscreteRV;
+
 pub const N_EVENT_RV: usize = 9;
 pub const N_TIMER_RV: usize = 3;
 
-pub const CORRELATIONS: [(EventRV, TimerRV); 12] = [
+pub const POPSYNC_CORRELATIONS: [(EventRV, TimerRV); 6] = [
     (EventRV::Source, TimerRV::PopulationControl),
     (EventRV::Source, TimerRV::CycleSync),
     (EventRV::Rr, TimerRV::PopulationControl),
     (EventRV::Rr, TimerRV::CycleSync),
     (EventRV::Split, TimerRV::PopulationControl),
     (EventRV::Split, TimerRV::CycleSync),
+];
+
+pub const TRACKING_CORRELATIONS: [(EventRV, TimerRV); 6] = [
     (EventRV::Absorb, TimerRV::CycleTracking),
     (EventRV::Scatter, TimerRV::CycleTracking),
     (EventRV::Fission, TimerRV::CycleTracking),
@@ -58,4 +63,12 @@ pub enum TimerSV {
     PopulationControl = 1,
     CycleTracking = 2,
     CycleSync = 5,
+}
+
+pub fn build_tracking_results(tallies_data: &[FiniteDiscreteRV]) -> Vec<f64> {
+    todo!()
+}
+
+pub fn build_popsync_results(tallies_data: &[FiniteDiscreteRV]) -> Vec<f64> {
+    todo!()
 }

@@ -1,0 +1,32 @@
+#!/usr/local/bin/gnuplot -persist
+set terminal pngcairo  transparent enhanced font "arial,10" fontscale 1.0 size 600, 250
+set output 'heatmap.png'
+unset key
+unset parametric
+set datafile separator comma
+set view map scale 1
+set style data lines
+set xtics border in scale 0,0 mirror norotate  autojustify
+set xtics  norangelimit
+set xtics   ()
+set ytics border in scale 0,0 mirror norotate  autojustify
+set ytics  norangelimit
+set ytics   ()
+set ztics border in scale 0,0 nomirror norotate  autojustify
+set cbtics
+set size ratio -1
+set rtics axis in scale 0,0 nomirror norotate  autojustify
+set title "Correlation Matrix"
+set xrange [ -0.500000 : 5.50000 ] noreverse nowriteback
+set x2range [ * : * ] noreverse writeback
+set yrange [ -0.500000 : 0.50000 ] noreverse nowriteback
+set y2range [ * : * ] noreverse writeback
+set zrange [ -1.0000 : 1.0000 ] noreverse writeback
+set cblabel "Correlation"
+set cbrange [ -1.00000 : 1.00000 ]
+#set colorbox vertical origin screen 0.9, 0.2 size screen 0.05, 0.6 front  noinvert bdefault
+set bmargin 8
+set colorbox horiz user origin graph 0,screen .15 size graph 1,screen .04
+NO_ANIMATION = 1
+
+plot 'res.dat' matrix rowheaders columnheaders with image
