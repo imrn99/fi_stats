@@ -1,6 +1,9 @@
 use std::fs::File;
 
-use crate::variables::{FiniteDiscreteRV, SummarizedVariable};
+use crate::{
+    mapping::{EventRV, N_EVENT_RV},
+    variables::{FiniteDiscreteRV, SummarizedVariable},
+};
 
 pub fn read_tallies(file_name: &str) -> [FiniteDiscreteRV; 9] {
     let file = File::open(file_name).unwrap();
@@ -21,13 +24,15 @@ pub fn read_tallies(file_name: &str) -> [FiniteDiscreteRV; 9] {
         let mut record = result.unwrap();
         record.trim();
         // for each column
-        values
-            .iter_mut()
-            .zip(record.into_iter())
-            .for_each(|(vec, val)| {
-                let value = val.parse::<f64>().unwrap();
-                vec.push(value)
-            });
+        (0..N_EVENT_RV).for_each(|idx| {
+            values[idx].push(
+                record
+                    .get(EventRV::get_csv_idx(idx))
+                    .unwrap()
+                    .parse()
+                    .unwrap(),
+            )
+        })
     }
     // convert value vectors to our structure
     values.map(|val| FiniteDiscreteRV::new(&val))
