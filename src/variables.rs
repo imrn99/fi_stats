@@ -1,5 +1,6 @@
 use std::iter::zip;
 
+#[derive(Debug)]
 pub struct FiniteDiscreteRV {
     pub values: Vec<f64>,
     pub mean: f64,
@@ -8,11 +9,12 @@ pub struct FiniteDiscreteRV {
 
 impl FiniteDiscreteRV {
     pub fn new(values: &[f64]) -> Self {
+        let n_val = values.len() as f64;
         let val = values.to_vec();
         let mut mean = val.iter().sum();
-        mean /= val.len() as f64;
+        mean /= n_val;
         let mut var = val.iter().map(|xi| (xi - mean) * (xi - mean)).sum();
-        var /= val.len() as f64;
+        var /= n_val;
 
         Self {
             values: val,
@@ -39,7 +41,7 @@ pub fn correlation(x: &FiniteDiscreteRV, y: &FiniteDiscreteRV) -> f64 {
     cov / (x.variance * y.variance).sqrt()
 }
 
-#[derive(Default, Clone, Copy)]
+#[derive(Default, Clone, Copy, Debug)]
 pub struct SummarizedVariable {
     pub mean: f64,
     pub lowest: f64,

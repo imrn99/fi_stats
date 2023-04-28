@@ -1,6 +1,6 @@
 use std::io::{self, stdout, Write};
 
-use stats::io_utils::read_tallies;
+use stats::io_utils::{read_tallies, read_timers};
 
 fn main() {
     let mut tallies_input = String::new();
@@ -19,6 +19,14 @@ fn main() {
         .read_line(&mut timers_input)
         .expect("Problem reading input.");
 
+    tallies_input = tallies_input.trim().to_owned();
+    timers_input = timers_input.trim().to_owned();
+    println!("Tallies file: \"{}\"", tallies_input);
+    println!("Timers file: \"{}\"", timers_input);
+
     let tallies_data = read_tallies(&tallies_input);
-    let timers_data = read_tallies(&timers_input);
+    let timers_data = read_timers(&timers_input);
+
+    println!("{tallies_data:#?}");
+    println!("{timers_data:#?}");
 }
