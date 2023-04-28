@@ -38,3 +38,11 @@ pub fn correlation(x: &FiniteDiscreteRV, y: &FiniteDiscreteRV) -> f64 {
     let cov = covariance(x, y);
     cov / (x.variance * y.variance).sqrt()
 }
+
+#[derive(Default, Clone, Copy)]
+pub struct SummarizedVariable {
+    pub mean: f64,
+    pub lowest: f64,
+    pub highest: f64,
+    pub total: f64,
+}
