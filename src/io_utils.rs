@@ -1,7 +1,7 @@
 use std::fs::File;
 
 use crate::{
-    mapping::{EventRV, N_EVENT_RV},
+    mapping::{get_csv_idx, N_EVENT_RV},
     variables::{FiniteDiscreteRV, SummarizedVariable},
 };
 
@@ -25,13 +25,7 @@ pub fn read_tallies(file_name: &str) -> [FiniteDiscreteRV; 9] {
         record.trim();
         // for each column
         (0..N_EVENT_RV).for_each(|idx| {
-            values[idx].push(
-                record
-                    .get(EventRV::get_csv_idx(idx))
-                    .unwrap()
-                    .parse()
-                    .unwrap(),
-            )
+            values[idx].push(record.get(get_csv_idx(idx)).unwrap().parse().unwrap())
         })
     }
     // convert value vectors to our structure

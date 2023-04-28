@@ -1,4 +1,20 @@
 pub const N_EVENT_RV: usize = 9;
+pub const N_TIMER_RV: usize = 3;
+
+pub const CORRELATIONS: [(EventRV, TimerRV); 12] = [
+    (EventRV::Source, TimerRV::PopulationControl),
+    (EventRV::Source, TimerRV::CycleSync),
+    (EventRV::Rr, TimerRV::PopulationControl),
+    (EventRV::Rr, TimerRV::CycleSync),
+    (EventRV::Split, TimerRV::PopulationControl),
+    (EventRV::Split, TimerRV::CycleSync),
+    (EventRV::Absorb, TimerRV::CycleTracking),
+    (EventRV::Scatter, TimerRV::CycleTracking),
+    (EventRV::Fission, TimerRV::CycleTracking),
+    (EventRV::Collision, TimerRV::CycleTracking),
+    (EventRV::Census, TimerRV::CycleTracking),
+    (EventRV::NumSeg, TimerRV::CycleTracking),
+];
 
 pub enum EventRV {
     Source = 2,
@@ -12,21 +28,28 @@ pub enum EventRV {
     NumSeg = 11,
 }
 
-impl EventRV {
-    pub fn get_csv_idx(idx: usize) -> usize {
-        assert!(idx < N_EVENT_RV);
-        match idx {
-            0 => EventRV::Source as usize,
-            1 => EventRV::Rr as usize,
-            2 => EventRV::Split as usize,
-            3 => EventRV::Absorb as usize,
-            4 => EventRV::Scatter as usize,
-            5 => EventRV::Fission as usize,
-            6 => EventRV::Collision as usize,
-            7 => EventRV::Census as usize,
-            8 => EventRV::NumSeg as usize,
-            _ => unreachable!(),
-        }
+pub enum TimerRV {
+    PopulationControl = 13,
+    CycleTracking = 14,
+    CycleSync = 15,
+}
+
+pub fn get_csv_idx(idx: usize) -> usize {
+    assert!(idx < N_EVENT_RV + N_TIMER_RV);
+    match idx {
+        0 => EventRV::Source as usize,
+        1 => EventRV::Rr as usize,
+        2 => EventRV::Split as usize,
+        3 => EventRV::Absorb as usize,
+        4 => EventRV::Scatter as usize,
+        5 => EventRV::Fission as usize,
+        6 => EventRV::Collision as usize,
+        7 => EventRV::Census as usize,
+        8 => EventRV::NumSeg as usize,
+        9 => TimerRV::PopulationControl as usize,
+        10 => TimerRV::CycleTracking as usize,
+        11 => TimerRV::CycleSync as usize,
+        _ => unreachable!(),
     }
 }
 
