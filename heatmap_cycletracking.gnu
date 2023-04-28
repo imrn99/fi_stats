@@ -26,7 +26,9 @@ set cblabel "Correlation"
 set cbrange [ -1.00000 : 1.00000 ]
 #set colorbox vertical origin screen 0.9, 0.2 size screen 0.05, 0.6 front  noinvert bdefault
 set bmargin 8
+set palette defined (-5 0 0 1, 0 1 1 1, 5 1 0 0)
 set colorbox horiz user origin graph 0,screen .15 size graph 1,screen .04
 NO_ANIMATION = 1
 
-plot 'res.dat' matrix rowheaders columnheaders with image
+plot 'res.dat' matrix rowheaders columnheaders with image, \
+     'res.dat' matrix rowheaders columnheaders using 1:2:($3 == 0 ? "" : sprintf("%g",$3) ) with labels
