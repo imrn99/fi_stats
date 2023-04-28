@@ -35,14 +35,14 @@ fn main() {
     let tracking_res = mapping::build_tracking_results(&tallies_data);
     let popsync_res = mapping::build_popsync_results(&tallies_data);
 
-    print_tracking_results(&tracking_res);
-    print_popsync_results(&popsync_res);
+    save_tracking_results(&tracking_res);
+    save_popsync_results(&popsync_res);
 }
 
-pub fn print_tracking_results(tracking_res: &[f64]) {
+pub fn save_tracking_results(tracking_res: &[f64]) {
     todo!()
 }
 
-pub fn print_popsync_results(popsync_res: &[f64]) {
+pub fn save_popsync_results(popsync_res: &[f64]) {
     todo!()
 }

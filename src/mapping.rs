@@ -1,4 +1,4 @@
-use crate::variables::FiniteDiscreteRV;
+use crate::variables::{correlation, FiniteDiscreteRV};
 
 pub const N_EVENT_RV: usize = 9;
 pub const N_TIMER_RV: usize = 3;
@@ -66,9 +66,72 @@ pub enum TimerSV {
 }
 
 pub fn build_tracking_results(tallies_data: &[FiniteDiscreteRV]) -> Vec<f64> {
-    todo!()
+    // The table is something like this
+    //
+    //               | Absorb | Scatter | Fission | Collision | Census | NumSeg
+    // CycleTracking | ...
+    //
+
+    vec![
+        correlation(
+            &tallies_data[EventRV::Absorb as usize],
+            &tallies_data[TimerRV::CycleTracking as usize],
+        ),
+        correlation(
+            &tallies_data[EventRV::Scatter as usize],
+            &tallies_data[TimerRV::CycleTracking as usize],
+        ),
+        correlation(
+            &tallies_data[EventRV::Fission as usize],
+            &tallies_data[TimerRV::CycleTracking as usize],
+        ),
+        correlation(
+            &tallies_data[EventRV::Collision as usize],
+            &tallies_data[TimerRV::CycleTracking as usize],
+        ),
+        correlation(
+            &tallies_data[EventRV::Census as usize],
+            &tallies_data[TimerRV::CycleTracking as usize],
+        ),
+        correlation(
+            &tallies_data[EventRV::NumSeg as usize],
+            &tallies_data[TimerRV::CycleTracking as usize],
+        ),
+    ]
 }
 
 pub fn build_popsync_results(tallies_data: &[FiniteDiscreteRV]) -> Vec<f64> {
-    todo!()
+    // The table is something like this
+    //
+    //                   | Source | Rr | Split
+    // PopulationControl | ...
+    // CycleSync         | ...
+    //
+    // gnuplot has the Y axis upside down, hence the vector:
+    vec![
+        correlation(
+            &tallies_data[EventRV::Source as usize],
+            &tallies_data[TimerRV::CycleSync as usize],
+        ),
+        correlation(
+            &tallies_data[EventRV::Rr as usize],
+            &tallies_data[TimerRV::CycleSync as usize],
+        ),
+        correlation(
+            &tallies_data[EventRV::Split as usize],
+            &tallies_data[TimerRV::CycleSync as usize],
+        ),
+        correlation(
+            &tallies_data[EventRV::Source as usize],
+            &tallies_data[TimerRV::PopulationControl as usize],
+        ),
+        correlation(
+            &tallies_data[EventRV::Rr as usize],
+            &tallies_data[TimerRV::PopulationControl as usize],
+        ),
+        correlation(
+            &tallies_data[EventRV::Split as usize],
+            &tallies_data[TimerRV::PopulationControl as usize],
+        ),
+    ]
 }
