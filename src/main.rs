@@ -81,17 +81,17 @@ pub fn save_popsync_results(popsync_res: &[f64]) {
         .truncate(true)
         .open("popsync.dat")
         .unwrap();
-    writeln!(file, ",Source,Rr,Split").unwrap();
+    writeln!(file, ",Rr,Split").unwrap();
     writeln!(
         file,
-        "CycleSync, {:.5}, {:.5}, {:.5}",
-        popsync_res[0], popsync_res[1], popsync_res[2]
+        "CycleSync, {:.5}, {:.5}",
+        popsync_res[1], popsync_res[2]
     )
     .unwrap();
     writeln!(
         file,
-        "PopulationControl, {:.5}, {:.5}, {:.5}",
-        popsync_res[3], popsync_res[4], popsync_res[5]
+        "PopulationControl, {:.5}, {:.5}",
+        popsync_res[4], popsync_res[5]
     )
     .unwrap();
 }
