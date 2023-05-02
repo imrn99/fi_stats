@@ -9,4 +9,6 @@ of [Fastiron], a Monte-Carlo particle transport code written in Rust.
 
 ## References
 
-- gnuplot heatmap [examples][https://gnuplot.sourceforge.net/demo/heatmaps.html]
+- gnuplot heatmap [examples][1]
+
+[1]: https://gnuplot.sourceforge.net/demo/heatmaps.html

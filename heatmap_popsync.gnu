@@ -1,5 +1,5 @@
 #!/usr/local/bin/gnuplot -persist
-set terminal pngcairo  transparent enhanced font "arial,10" fontscale 1.0
+set terminal pngcairo background rgb 'white' enhanced font "arial,10" fontscale 1.0
 set output 'heatmap_popsync.png'
 unset key
 unset parametric
