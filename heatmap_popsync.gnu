@@ -1,6 +1,6 @@
 #!/usr/local/bin/gnuplot -persist
-set terminal pngcairo  transparent enhanced font "arial,10" fontscale 1.0 size 600, 250
-set output 'heatmap_tracking.png'
+set terminal pngcairo  transparent enhanced font "arial,10" fontscale 1.0
+set output 'heatmap_popsync.png'
 unset key
 unset parametric
 set datafile separator comma
@@ -17,9 +17,9 @@ set cbtics
 set size ratio -1
 set rtics axis in scale 0,0 nomirror norotate  autojustify
 set title "Correlation Matrix"
-set xrange [ -0.500000 : 5.50000 ] noreverse nowriteback
+set xrange [ -0.500000 : 1.50000 ] noreverse nowriteback
 set x2range [ * : * ] noreverse writeback
-set yrange [ -0.500000 : 0.50000 ] noreverse nowriteback
+set yrange [ -0.500000 : 1.50000 ] noreverse nowriteback
 set y2range [ * : * ] noreverse writeback
 set zrange [ -1.0000 : 1.0000 ] noreverse writeback
 set cblabel "Correlation"
@@ -30,5 +30,5 @@ set palette defined (-5 0 0 1, 0 1 1 1, 5 1 0 0)
 set colorbox horiz user origin graph 0,screen .15 size graph 1,screen .04
 NO_ANIMATION = 1
 
-plot 'tracking.dat' matrix rowheaders columnheaders with image, \
-     'tracking.dat' matrix rowheaders columnheaders using 1:2:($3 == 0 ? "" : sprintf("%g",$3) ) with labels
+plot 'popsync.dat' matrix rowheaders columnheaders with image, \
+     'popsync.dat' matrix rowheaders columnheaders using 1:2:($3 == 0 ? "" : sprintf("%g",$3) ) with labels
