@@ -30,5 +30,5 @@ set palette defined (-5 0 0 1, 0 1 1 1, 5 1 0 0)
 set colorbox horiz user origin graph 0,screen .15 size graph 1,screen .04
 NO_ANIMATION = 1
 
-plot 'res.dat' matrix rowheaders columnheaders with image, \
-     'res.dat' matrix rowheaders columnheaders using 1:2:($3 == 0 ? "" : sprintf("%g",$3) ) with labels
+plot 'tracking.dat' matrix rowheaders columnheaders with image, \
+     'tracking.dat' matrix rowheaders columnheaders using 1:2:($3 == 0 ? "" : sprintf("%g",$3) ) with labels
