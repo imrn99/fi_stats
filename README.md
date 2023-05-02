@@ -3,6 +3,11 @@
 This repository contains code used for statistical analysis of the behavior
 of [Fastiron], a Monte-Carlo particle transport code written in Rust.
 
+## Usage
+
+### Benchmark Statistics
+
+### Scaling Graph
 
 
 [Fastiron]: https://github.com/cea-hpc/fastiron
