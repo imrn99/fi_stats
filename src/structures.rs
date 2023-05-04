@@ -1,4 +1,37 @@
-use std::iter::zip;
+use std::{iter::zip, ops::Index};
+
+pub const N_TALLIED_DATA: usize = 17;
+
+#[derive(Debug)]
+pub enum TalliedData {
+    Cycle = 0,
+    Start = 1,
+    Source = 2,
+    Rr = 3,
+    Split = 4,
+    Absorb = 5,
+    Scatter = 6,
+    Fission = 7,
+    Produce = 8,
+    Collision = 9,
+    Escape = 10,
+    Census = 11,
+    NumSeg = 12,
+    ScalarFlux = 13,
+    PopulationControl = 14,
+    CycleTracking = 15,
+    CycleSync = 16,
+}
+
+#[derive(Debug, Clone, Copy)]
+pub enum TimerSV {
+    Main = 0,
+    PopulationControl = 1,
+    CycleTracking = 2,
+    CycleTrackingKernel = 3,
+    CycleTrackingComm = 4,
+    CycleSync = 5,
+}
 
 #[derive(Debug)]
 pub struct FiniteDiscreteRV {
@@ -47,4 +80,16 @@ pub struct SummarizedVariable {
     pub lowest: f64,
     pub highest: f64,
     pub total: f64,
+}
+
+pub struct TimerReport {
+    pub timers_data: [SummarizedVariable; 6],
+}
+
+impl Index<TimerSV> for TimerReport {
+    type Output = SummarizedVariable;
+
+    fn index(&self, timer: TimerSV) -> &Self::Output {
+        &self.timers_data[timer as usize]
+    }
 }

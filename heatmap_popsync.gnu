@@ -1,5 +1,5 @@
 #!/usr/local/bin/gnuplot -persist
-set terminal pngcairo background rgb 'white' enhanced font "arial,10" fontscale 1.0
+set terminal pngcairo background rgb 'white' enhanced font "arial,10" fontscale 1.0 size 600, 500
 set output 'heatmap_popsync.png'
 unset key
 unset parametric
@@ -24,10 +24,9 @@ set y2range [ * : * ] noreverse writeback
 set zrange [ -1.0000 : 1.0000 ] noreverse writeback
 set cblabel "Correlation"
 set cbrange [ -1.00000 : 1.00000 ]
-#set colorbox vertical origin screen 0.9, 0.2 size screen 0.05, 0.6 front  noinvert bdefault
 set bmargin 8
 set palette defined (-5 0 0 1, 0 1 1 1, 5 1 0 0)
-set colorbox horiz user origin graph 0,screen .15 size graph 1,screen .04
+set colorbox horiz user origin graph 0,screen .1 size graph 1,screen .04
 NO_ANIMATION = 1
 
 plot 'popsync.dat' matrix rowheaders columnheaders with image, \
