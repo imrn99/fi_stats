@@ -68,6 +68,22 @@ pub fn read_timers(file_name: &str) -> TimerReport {
 // =======
 // Writing
 
+pub fn save_percents(percents: &[f64]) {
+    // Write the result in a Markdown table; maybe we can generate an entire report?
+    let mut file = OpenOptions::new()
+        .write(true)
+        .create(true)
+        .truncate(true)
+        .open("percents.md")
+        .unwrap();
+    writeln!(file, "| Section              | Percent Change |").unwrap();
+    writeln!(file, "|----------------------|----------------|").unwrap();
+    writeln!(file, "| Total execution time | {:>13.1}% |", percents[0]).unwrap();
+    writeln!(file, "| PopulationControl    | {:>13.1}% |", percents[1]).unwrap();
+    writeln!(file, "| CycleTracking        | {:>13.1}% |", percents[2]).unwrap();
+    writeln!(file, "| CycleSync            | {:>13.1}% |", percents[3]).unwrap();
+}
+
 pub fn save_tracking_results(tracking_res: &[f64]) {
     // The table is something like this
     //

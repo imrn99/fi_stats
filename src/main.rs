@@ -1,7 +1,9 @@
 use std::io::{self, stdout, Write};
 
 use stats::{
-    io_utils::{read_tallies, read_timers, save_popsync_results, save_tracking_results},
+    io_utils::{
+        read_tallies, read_timers, save_percents, save_popsync_results, save_tracking_results,
+    },
     processing::{self, compare},
 };
 
@@ -72,8 +74,8 @@ fn main() {
         // Get data, process it, save results
         let old_timer_report = read_timers(&old_timers);
         let new_timer_report = read_timers(&new_timers);
-
         let percents = compare(old_timer_report, new_timer_report);
+        save_percents(&percents);
     }
 
     if correlation {
