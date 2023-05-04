@@ -2,9 +2,11 @@ use std::io::{self, stdout, Write};
 
 use stats::{
     io_utils::{
-        read_tallies, read_timers, save_percents, save_popsync_results, save_tracking_results,
+        compile_scaling_data, read_tallies, read_timers, save_percents, save_popsync_results,
+        save_tracking_results,
     },
     processing::{self, compare},
+    structures::TimerReport,
 };
 
 fn main() {
@@ -139,6 +141,15 @@ fn main() {
         println!();
         let n_iter: usize = txt_input.parse().unwrap();
         txt_input.clear();
+
+        // Get data, process it, save results
+        let timers: Vec<TimerReport> = (0..n_iter)
+            .map(|idx| {
+                let filename = format!("{}{}.csv", root, n_start + idx * step);
+                read_timers(filename.as_ref())
+            })
+            .collect();
+        compile_scaling_data(&timers, n_start, step);
     }
     println!("Finished! All data is ready for use.")
 }
