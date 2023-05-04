@@ -1,14 +1,19 @@
 use std::fs::File;
 
 use crate::{
-    mapping::{get_csv_idx, N_EVENT_RV, N_TIMER_RV},
+    mapping::N_TALLIED_DATA,
     variables::{FiniteDiscreteRV, SummarizedVariable},
 };
 
-pub fn read_tallies(file_name: &str) -> [FiniteDiscreteRV; 12] {
+pub fn read_tallies(file_name: &str) -> [FiniteDiscreteRV; N_TALLIED_DATA] {
     let file = File::open(file_name).unwrap();
     let mut reader = csv::ReaderBuilder::new().delimiter(b';').from_reader(file);
-    let mut values: [Vec<f64>; 12] = [
+    let mut values: [Vec<f64>; N_TALLIED_DATA] = [
+        Vec::with_capacity(100),
+        Vec::with_capacity(100),
+        Vec::with_capacity(100),
+        Vec::with_capacity(100),
+        Vec::with_capacity(100),
         Vec::with_capacity(100),
         Vec::with_capacity(100),
         Vec::with_capacity(100),
@@ -27,8 +32,8 @@ pub fn read_tallies(file_name: &str) -> [FiniteDiscreteRV; 12] {
         let mut record = result.unwrap();
         record.trim();
         // for each column
-        (0..N_EVENT_RV + N_TIMER_RV).for_each(|idx| {
-            let val = record.get(get_csv_idx(idx)).unwrap();
+        (0..N_TALLIED_DATA).for_each(|idx| {
+            let val = record.get(idx).unwrap();
             values[idx].push(val.parse().unwrap())
         })
     }

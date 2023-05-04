@@ -1,79 +1,43 @@
 use crate::variables::{correlation, FiniteDiscreteRV};
 
-pub const N_EVENT_RV: usize = 9;
-pub const N_TIMER_RV: usize = 3;
+pub const N_TALLIED_DATA: usize = 17;
 
-pub const POPSYNC_CORRELATIONS: [(EventRV, TimerRV); 6] = [
-    (EventRV::Source, TimerRV::PopulationControl),
-    (EventRV::Source, TimerRV::CycleSync),
-    (EventRV::Rr, TimerRV::PopulationControl),
-    (EventRV::Rr, TimerRV::CycleSync),
-    (EventRV::Split, TimerRV::PopulationControl),
-    (EventRV::Split, TimerRV::CycleSync),
+pub const POPSYNC_CORRELATIONS: [(TalliedData, TalliedData); 6] = [
+    (TalliedData::Source, TalliedData::PopulationControl),
+    (TalliedData::Source, TalliedData::CycleSync),
+    (TalliedData::Rr, TalliedData::PopulationControl),
+    (TalliedData::Rr, TalliedData::CycleSync),
+    (TalliedData::Split, TalliedData::PopulationControl),
+    (TalliedData::Split, TalliedData::CycleSync),
 ];
 
-pub const TRACKING_CORRELATIONS: [(EventRV, TimerRV); 6] = [
-    (EventRV::Absorb, TimerRV::CycleTracking),
-    (EventRV::Scatter, TimerRV::CycleTracking),
-    (EventRV::Fission, TimerRV::CycleTracking),
-    (EventRV::Collision, TimerRV::CycleTracking),
-    (EventRV::Census, TimerRV::CycleTracking),
-    (EventRV::NumSeg, TimerRV::CycleTracking),
+pub const TRACKING_CORRELATIONS: [(TalliedData, TalliedData); 6] = [
+    (TalliedData::Absorb, TalliedData::CycleTracking),
+    (TalliedData::Scatter, TalliedData::CycleTracking),
+    (TalliedData::Fission, TalliedData::CycleTracking),
+    (TalliedData::Collision, TalliedData::CycleTracking),
+    (TalliedData::Census, TalliedData::CycleTracking),
+    (TalliedData::NumSeg, TalliedData::CycleTracking),
 ];
 
-pub enum EventRV {
+pub enum TalliedData {
+    Cycle = 0,
+    Start = 1,
     Source = 2,
     Rr = 3,
     Split = 4,
     Absorb = 5,
     Scatter = 6,
     Fission = 7,
+    Produce = 8,
     Collision = 9,
+    Escape = 10,
     Census = 11,
     NumSeg = 12,
-}
-
-pub enum TimerRV {
+    ScalarFlux = 13,
     PopulationControl = 14,
     CycleTracking = 15,
     CycleSync = 16,
-}
-
-pub fn get_csv_idx(idx: usize) -> usize {
-    assert!(idx < N_EVENT_RV + N_TIMER_RV);
-    match idx {
-        0 => EventRV::Source as usize,
-        1 => EventRV::Rr as usize,
-        2 => EventRV::Split as usize,
-        3 => EventRV::Absorb as usize,
-        4 => EventRV::Scatter as usize,
-        5 => EventRV::Fission as usize,
-        6 => EventRV::Collision as usize,
-        7 => EventRV::Census as usize,
-        8 => EventRV::NumSeg as usize,
-        9 => TimerRV::PopulationControl as usize,
-        10 => TimerRV::CycleTracking as usize,
-        11 => TimerRV::CycleSync as usize,
-        _ => unreachable!(),
-    }
-}
-
-pub fn get_table_idx(idx: usize) -> usize {
-    match idx {
-        2 => 0,
-        3 => 1,
-        4 => 2,
-        5 => 3,
-        6 => 4,
-        7 => 5,
-        9 => 6,
-        11 => 7,
-        12 => 8,
-        14 => 9,
-        15 => 10,
-        16 => 11,
-        _ => unreachable!(),
-    }
 }
 
 pub enum TimerSV {
@@ -92,28 +56,28 @@ pub fn build_tracking_results(tallies_data: &[FiniteDiscreteRV]) -> Vec<f64> {
 
     vec![
         correlation(
-            &tallies_data[get_table_idx(EventRV::Absorb as usize)],
-            &tallies_data[get_table_idx(TimerRV::CycleTracking as usize)],
+            &tallies_data[TalliedData::Absorb as usize],
+            &tallies_data[TalliedData::CycleTracking as usize],
         ),
         correlation(
-            &tallies_data[get_table_idx(EventRV::Scatter as usize)],
-            &tallies_data[get_table_idx(TimerRV::CycleTracking as usize)],
+            &tallies_data[TalliedData::Scatter as usize],
+            &tallies_data[TalliedData::CycleTracking as usize],
         ),
         correlation(
-            &tallies_data[get_table_idx(EventRV::Fission as usize)],
-            &tallies_data[get_table_idx(TimerRV::CycleTracking as usize)],
+            &tallies_data[TalliedData::Fission as usize],
+            &tallies_data[TalliedData::CycleTracking as usize],
         ),
         correlation(
-            &tallies_data[get_table_idx(EventRV::Collision as usize)],
-            &tallies_data[get_table_idx(TimerRV::CycleTracking as usize)],
+            &tallies_data[TalliedData::Collision as usize],
+            &tallies_data[TalliedData::CycleTracking as usize],
         ),
         correlation(
-            &tallies_data[get_table_idx(EventRV::Census as usize)],
-            &tallies_data[get_table_idx(TimerRV::CycleTracking as usize)],
+            &tallies_data[TalliedData::Census as usize],
+            &tallies_data[TalliedData::CycleTracking as usize],
         ),
         correlation(
-            &tallies_data[get_table_idx(EventRV::NumSeg as usize)],
-            &tallies_data[get_table_idx(TimerRV::CycleTracking as usize)],
+            &tallies_data[TalliedData::NumSeg as usize],
+            &tallies_data[TalliedData::CycleTracking as usize],
         ),
     ]
 }
@@ -128,28 +92,28 @@ pub fn build_popsync_results(tallies_data: &[FiniteDiscreteRV]) -> Vec<f64> {
     // gnuplot has the Y axis upside down, hence the vector:
     vec![
         correlation(
-            &tallies_data[get_table_idx(EventRV::Source as usize)],
-            &tallies_data[get_table_idx(TimerRV::CycleSync as usize)],
+            &tallies_data[TalliedData::Source as usize],
+            &tallies_data[TalliedData::CycleSync as usize],
         ),
         correlation(
-            &tallies_data[get_table_idx(EventRV::Rr as usize)],
-            &tallies_data[get_table_idx(TimerRV::CycleSync as usize)],
+            &tallies_data[TalliedData::Rr as usize],
+            &tallies_data[TalliedData::CycleSync as usize],
         ),
         correlation(
-            &tallies_data[get_table_idx(EventRV::Split as usize)],
-            &tallies_data[get_table_idx(TimerRV::CycleSync as usize)],
+            &tallies_data[TalliedData::Split as usize],
+            &tallies_data[TalliedData::CycleSync as usize],
         ),
         correlation(
-            &tallies_data[get_table_idx(EventRV::Source as usize)],
-            &tallies_data[get_table_idx(TimerRV::PopulationControl as usize)],
+            &tallies_data[TalliedData::Source as usize],
+            &tallies_data[TalliedData::PopulationControl as usize],
         ),
         correlation(
-            &tallies_data[get_table_idx(EventRV::Rr as usize)],
-            &tallies_data[get_table_idx(TimerRV::PopulationControl as usize)],
+            &tallies_data[TalliedData::Rr as usize],
+            &tallies_data[TalliedData::PopulationControl as usize],
         ),
         correlation(
-            &tallies_data[get_table_idx(EventRV::Split as usize)],
-            &tallies_data[get_table_idx(TimerRV::PopulationControl as usize)],
+            &tallies_data[TalliedData::Split as usize],
+            &tallies_data[TalliedData::PopulationControl as usize],
         ),
     ]
 }
