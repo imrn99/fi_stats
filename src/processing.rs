@@ -1,6 +1,4 @@
-use crate::variables::{correlation, FiniteDiscreteRV};
-
-pub const N_TALLIED_DATA: usize = 17;
+use crate::structures::{correlation, FiniteDiscreteRV, TalliedData};
 
 pub const POPSYNC_CORRELATIONS: [(TalliedData, TalliedData); 6] = [
     (TalliedData::Source, TalliedData::PopulationControl),
@@ -19,35 +17,6 @@ pub const TRACKING_CORRELATIONS: [(TalliedData, TalliedData); 6] = [
     (TalliedData::Census, TalliedData::CycleTracking),
     (TalliedData::NumSeg, TalliedData::CycleTracking),
 ];
-
-pub enum TalliedData {
-    Cycle = 0,
-    Start = 1,
-    Source = 2,
-    Rr = 3,
-    Split = 4,
-    Absorb = 5,
-    Scatter = 6,
-    Fission = 7,
-    Produce = 8,
-    Collision = 9,
-    Escape = 10,
-    Census = 11,
-    NumSeg = 12,
-    ScalarFlux = 13,
-    PopulationControl = 14,
-    CycleTracking = 15,
-    CycleSync = 16,
-}
-
-pub enum TimerSV {
-    Main = 0,
-    PopulationControl = 1,
-    CycleTracking = 2,
-    CycleTrackingKernel = 3,
-    CycleTrackingComm = 4,
-    CycleSync = 5,
-}
 
 pub fn build_tracking_results(tallies_data: &[FiniteDiscreteRV]) -> Vec<f64> {
     // The table is something like this

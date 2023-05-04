@@ -2,7 +2,7 @@ use std::io::{self, stdout, Write};
 
 use stats::{
     io_utils::{read_tallies, read_timers, save_popsync_results, save_tracking_results},
-    mapping,
+    processing,
 };
 
 fn main() {
@@ -89,8 +89,8 @@ fn main() {
 
         // Get data, process it, save results
         let tallies_data = read_tallies(&tallies_report);
-        let tracking_res = mapping::build_tracking_results(&tallies_data);
-        let popsync_res = mapping::build_popsync_results(&tallies_data);
+        let tracking_res = processing::build_tracking_results(&tallies_data);
+        let popsync_res = processing::build_popsync_results(&tallies_data);
         save_tracking_results(&tracking_res);
         save_popsync_results(&popsync_res);
     }

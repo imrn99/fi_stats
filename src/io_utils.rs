@@ -3,9 +3,8 @@ use std::{
     io::Write,
 };
 
-use crate::{
-    mapping::{TimerSV, N_TALLIED_DATA},
-    variables::{FiniteDiscreteRV, SummarizedVariable, TimerReport},
+use crate::structures::{
+    FiniteDiscreteRV, SummarizedVariable, TimerReport, TimerSV, N_TALLIED_DATA,
 };
 
 pub fn read_tallies(file_name: &str) -> [FiniteDiscreteRV; N_TALLIED_DATA] {
