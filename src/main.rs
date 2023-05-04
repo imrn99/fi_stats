@@ -94,27 +94,65 @@ fn main() {
         save_popsync_results(&popsync_res);
     }
 
-    if scaling {}
-
-    /*
-    println!();
-    println!("Tallies report .csv file: ");
-    stdout().flush().unwrap();
-    io::stdin()
-        .read_line(&mut tallies_input)
-        .expect("Problem reading input.");
-
-    println!("Timers report .csv file: ");
-    stdout().flush().unwrap();
-    io::stdin()
-        .read_line(&mut timers_input)
-        .expect("Problem reading input.");
-
-    tallies_input = tallies_input.trim().to_owned();
-    timers_input = timers_input.trim().to_owned();
-    println!("Tallies file: \"{}\"", tallies_input);
-    println!("Timers file: \"{}\"", timers_input);*/
-
+    if scaling {
+        println!("+-------------+");
+        println!("|Scaling Study|");
+        // Get tallied data
+        println!("CURRENTLY ONLY SUPPORTS LINEAR SCALING");
+        println!("GEOMETRIC PROGRESSION WILL BE ADDED IN THE FUTURE");
+        println!("This study requires the input files to fit a pattern for easy reading.");
+        println!("For example:");
+        println!("|");
+        println!("+--+>some_folder_with_data/");
+        println!("|  |");
+        println!("|  +--+timers_report10000.csv");
+        println!("|     +timers_report20000.csv");
+        println!("|     +timers_report30000.csv");
+        println!("|     +timers_report40000.csv");
+        println!("+--+>...");
+        println!("In this case:");
+        println!(" - the root is \"timers_report\".");
+        println!(" - the starting number of particles is 10000");
+        println!(" - the step is 10000");
+        println!(" - the number of iteration is 4");
+        println!();
+        // Get naming root
+        print!("Name root of the timers report .csv file: ");
+        stdout().flush().unwrap();
+        io::stdin()
+            .read_line(&mut txt_input)
+            .expect("Problem reading input.");
+        println!();
+        let root = txt_input.trim().to_owned();
+        txt_input.clear();
+        // get starting number of particles
+        print!("Starting number of particles: ");
+        stdout().flush().unwrap();
+        io::stdin()
+            .read_line(&mut txt_input)
+            .expect("Problem reading input.");
+        println!();
+        let n_start: usize = txt_input.parse().unwrap();
+        txt_input.clear();
+        // get step
+        print!("Step: ");
+        stdout().flush().unwrap();
+        io::stdin()
+            .read_line(&mut txt_input)
+            .expect("Problem reading input.");
+        println!();
+        let step: usize = txt_input.parse().unwrap();
+        txt_input.clear();
+        // get number of iterations
+        print!("Number of iterations: ");
+        stdout().flush().unwrap();
+        io::stdin()
+            .read_line(&mut txt_input)
+            .expect("Problem reading input.");
+        println!();
+        let n_iter: usize = txt_input.parse().unwrap();
+        txt_input.clear();
+    }
     //let tallies_data = read_tallies(&tallies_input);
     //let timers_data = read_timers(&timers_input);
 
