@@ -1,7 +1,7 @@
 use std::io::{self, stdout, Write};
 
 use stats::{
-    io_utils::{read_tallies, save_popsync_results, save_tracking_results},
+    io_utils::{read_tallies, read_timers, save_popsync_results, save_tracking_results},
     mapping,
 };
 
@@ -70,7 +70,8 @@ fn main() {
         txt_input.clear();
 
         // Get data, process it, save results
-        // ...
+        let old_timer_report = read_timers(&old_timers);
+        let new_timer_report = read_timers(&new_timers);
     }
 
     if correlation {
@@ -97,25 +98,7 @@ fn main() {
     if scaling {
         println!("+-------------+");
         println!("|Scaling Study|");
-        // Get tallied data
-        println!("CURRENTLY ONLY SUPPORTS LINEAR SCALING");
-        println!("GEOMETRIC PROGRESSION WILL BE ADDED IN THE FUTURE");
-        println!("This study requires the input files to fit a pattern for easy reading.");
-        println!("For example:");
-        println!("|");
-        println!("+--+>some_folder_with_data/");
-        println!("|  |");
-        println!("|  +--+timers_report10000.csv");
-        println!("|     +timers_report20000.csv");
-        println!("|     +timers_report30000.csv");
-        println!("|     +timers_report40000.csv");
-        println!("+--+>...");
-        println!("In this case:");
-        println!(" - the root is \"timers_report\".");
-        println!(" - the starting number of particles is 10000");
-        println!(" - the step is 10000");
-        println!(" - the number of iteration is 4");
-        println!();
+        scaling_help();
         // Get naming root
         print!("Name root of the timers report .csv file: ");
         stdout().flush().unwrap();
@@ -153,13 +136,26 @@ fn main() {
         let n_iter: usize = txt_input.parse().unwrap();
         txt_input.clear();
     }
-    //let tallies_data = read_tallies(&tallies_input);
-    //let timers_data = read_timers(&timers_input);
+    println!("Finished! All data is ready for use.")
+}
 
-    // Correlation analysis
-    //let tracking_res = mapping::build_tracking_results(&tallies_data);
-    //let popsync_res = mapping::build_popsync_results(&tallies_data);
-
-    //save_tracking_results(&tracking_res);
-    //save_popsync_results(&popsync_res);
+fn scaling_help() {
+    println!("CURRENTLY ONLY SUPPORTS LINEAR SCALING");
+    println!("GEOMETRIC PROGRESSION WILL BE ADDED IN THE FUTURE");
+    println!("This study requires the input files to fit a pattern for easy reading.");
+    println!("For example:");
+    println!("|");
+    println!("+--+>some_folder_with_data/");
+    println!("|  |");
+    println!("|  +--+timers_report10000.csv");
+    println!("|     +timers_report20000.csv");
+    println!("|     +timers_report30000.csv");
+    println!("|     +timers_report40000.csv");
+    println!("+--+>...");
+    println!("In this case:");
+    println!(" - the root is \"timers_report\".");
+    println!(" - the starting number of particles is 10000");
+    println!(" - the step is 10000");
+    println!(" - the number of iteration is 4");
+    println!();
 }
