@@ -7,6 +7,9 @@ use crate::structures::{
     FiniteDiscreteRV, SummarizedVariable, TimerReport, TimerSV, N_TALLIED_DATA,
 };
 
+// =======
+// Reading
+
 pub fn read_tallies(file_name: &str) -> [FiniteDiscreteRV; N_TALLIED_DATA] {
     let file = File::open(file_name).unwrap();
     let mut reader = csv::ReaderBuilder::new().delimiter(b';').from_reader(file);
@@ -61,6 +64,9 @@ pub fn read_timers(file_name: &str) -> TimerReport {
 
     TimerReport { timers_data: res }
 }
+
+// =======
+// Writing
 
 pub fn save_tracking_results(tracking_res: &[f64]) {
     // The table is something like this

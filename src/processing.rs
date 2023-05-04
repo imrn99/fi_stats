@@ -1,4 +1,4 @@
-use crate::structures::{correlation, FiniteDiscreteRV, TalliedData};
+use crate::structures::{correlation, FiniteDiscreteRV, TalliedData, TimerReport, TimerSV};
 
 pub const POPSYNC_CORRELATIONS: [(TalliedData, TalliedData); 6] = [
     (TalliedData::Source, TalliedData::PopulationControl),
@@ -17,6 +17,18 @@ pub const TRACKING_CORRELATIONS: [(TalliedData, TalliedData); 6] = [
     (TalliedData::Census, TalliedData::CycleTracking),
     (TalliedData::NumSeg, TalliedData::CycleTracking),
 ];
+
+pub fn compare(old: TimerReport, new: TimerReport) -> [f64; 4] {
+    let relative_change =
+        |section: TimerSV| (new[section].mean - old[section].mean) / old[section].mean;
+
+    let exec_time = relative_change(TimerSV::Main) * 100.0;
+    let pop_control = relative_change(TimerSV::PopulationControl) * 100.0;
+    let tracking = relative_change(TimerSV::CycleTracking) * 100.0;
+    let sync = relative_change(TimerSV::CycleSync) * 100.0;
+
+    [exec_time, pop_control, tracking, sync]
+}
 
 pub fn build_tracking_results(tallies_data: &[FiniteDiscreteRV]) -> Vec<f64> {
     // The table is something like this

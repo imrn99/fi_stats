@@ -2,6 +2,7 @@ use std::{iter::zip, ops::Index};
 
 pub const N_TALLIED_DATA: usize = 17;
 
+#[derive(Debug)]
 pub enum TalliedData {
     Cycle = 0,
     Start = 1,
@@ -22,6 +23,7 @@ pub enum TalliedData {
     CycleSync = 16,
 }
 
+#[derive(Debug, Clone, Copy)]
 pub enum TimerSV {
     Main = 0,
     PopulationControl = 1,
