@@ -121,7 +121,7 @@ fn main() {
             .read_line(&mut txt_input)
             .expect("Problem reading input.");
         println!();
-        let n_start: usize = txt_input.parse().unwrap();
+        let n_start: usize = txt_input.trim().parse().unwrap();
         txt_input.clear();
         // get step
         print!("Step: ");
@@ -130,7 +130,7 @@ fn main() {
             .read_line(&mut txt_input)
             .expect("Problem reading input.");
         println!();
-        let step: usize = txt_input.parse().unwrap();
+        let step: usize = txt_input.trim().parse().unwrap();
         txt_input.clear();
         // get number of iterations
         print!("Number of iterations: ");
@@ -139,7 +139,7 @@ fn main() {
             .read_line(&mut txt_input)
             .expect("Problem reading input.");
         println!();
-        let n_iter: usize = txt_input.parse().unwrap();
+        let n_iter: usize = txt_input.trim().parse().unwrap();
         txt_input.clear();
 
         // Get data, process it, save results
