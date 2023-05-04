@@ -1,4 +1,6 @@
-use std::iter::zip;
+use std::{iter::zip, ops::Index};
+
+use crate::mapping::TimerSV;
 
 #[derive(Debug)]
 pub struct FiniteDiscreteRV {
@@ -47,4 +49,16 @@ pub struct SummarizedVariable {
     pub lowest: f64,
     pub highest: f64,
     pub total: f64,
+}
+
+pub struct TimerReport {
+    pub timers_data: [SummarizedVariable; 6],
+}
+
+impl Index<TimerSV> for TimerReport {
+    type Output = SummarizedVariable;
+
+    fn index(&self, timer: TimerSV) -> &Self::Output {
+        &self.timers_data[timer as usize]
+    }
 }

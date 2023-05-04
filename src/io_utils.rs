@@ -4,8 +4,8 @@ use std::{
 };
 
 use crate::{
-    mapping::N_TALLIED_DATA,
-    variables::{FiniteDiscreteRV, SummarizedVariable},
+    mapping::{TimerSV, N_TALLIED_DATA},
+    variables::{FiniteDiscreteRV, SummarizedVariable, TimerReport},
 };
 
 pub fn read_tallies(file_name: &str) -> [FiniteDiscreteRV; N_TALLIED_DATA] {
@@ -44,7 +44,7 @@ pub fn read_tallies(file_name: &str) -> [FiniteDiscreteRV; N_TALLIED_DATA] {
     values.map(|val| FiniteDiscreteRV::new(&val))
 }
 
-pub fn read_timers(file_name: &str) -> [SummarizedVariable; 6] {
+pub fn read_timers(file_name: &str) -> TimerReport {
     let mut res = [SummarizedVariable::default(); 6];
     let file = File::open(file_name).unwrap();
     let mut reader = csv::ReaderBuilder::new().delimiter(b';').from_reader(file);
@@ -60,7 +60,7 @@ pub fn read_timers(file_name: &str) -> [SummarizedVariable; 6] {
         res[timer_idx].total = record.get(5).unwrap().parse().unwrap();
     }
 
-    res
+    TimerReport { timers_data: res }
 }
 
 pub fn save_tracking_results(tracking_res: &[f64]) {
@@ -118,4 +118,32 @@ pub fn save_popsync_results(popsync_res: &[f64]) {
         popsync_res[4], popsync_res[5]
     )
     .unwrap();
+}
+
+pub fn compile_scaling_data(timer_data: &[TimerReport], n_start: usize, step: usize) {
+    let mut file = OpenOptions::new()
+        .write(true)
+        .create(true)
+        .truncate(true)
+        .open("scaling.dat")
+        .unwrap();
+    // we assume correct ordering of the summarized variables
+    // i.e. lowest number of particle to highest
+    // also assume an arithmetic progression for n_particles
+    writeln!(
+        file,
+        "n_particles,PopulationControlAvg,CycleTrackingAvg,CycleSyncAvg"
+    )
+    .unwrap();
+    timer_data.iter().enumerate().for_each(|(idx, report)| {
+        writeln!(
+            file,
+            "{},{},{},{}",
+            n_start + idx * step,
+            report[TimerSV::PopulationControl].mean,
+            report[TimerSV::CycleTracking].mean,
+            report[TimerSV::CycleSync].mean,
+        )
+        .unwrap();
+    });
 }

@@ -44,6 +44,8 @@ pub enum TimerSV {
     Main = 0,
     PopulationControl = 1,
     CycleTracking = 2,
+    CycleTrackingKernel = 3,
+    CycleTrackingComm = 4,
     CycleSync = 5,
 }
 
