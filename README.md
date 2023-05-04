@@ -5,7 +5,7 @@ of [Fastiron][1], a Monte-Carlo particle transport code written in Rust.
 
 ## Usage
 
-The program can be run like any cargo projects: 
+The program can be run like any other cargo projects: 
 
 ```
 cargo run --release
@@ -28,16 +28,41 @@ supported computations:
   in the future, as well as a specific script to plot this data using a logarithmic
   scale.
 
+The user will be prompted first on which computations he wishes to do, only then 
+will specific data be requested for processing.
+
 ### Comparison Study
+
+The user will be asked to provide two timers `.csv` files, referred to as the 
+_old_ one and the _new_ one (read _previous_ and _current_ in the context of 
+versions). Percents will be computed using [this][3] definition and saved in 
+a formatted MarkDown table `percents.md`.
 
 ### Benchmark Statistics
 
+The user will be asked to provide a single tallies `.csv` file. From the values
+of this file will be built random variables, each taking a value according to
+the cycle index. Specific correlation coefficients are then computed to evaluate 
+the influence of tallied event on the execution time of each main sections: 
+`PopulationControl`, `CycleTracking` and `CycleSync`.
+
 ### Scaling Graph
 
+The user will be asked to provide four parameters for the program to run correctly:
+
+- The common root name of the multiple timers files
+- The number of particles in the first simulation
+- The step (common difference) defining the (arithmetic) progression
+- The number of iteration, i.e. the number of samples
+
+An example is given to the user at runtime to ensure clarity.
 
 ## TO-DO
 
-- Add full support for geometric progressions in number of particle scaling
+- Add full support for geometric progressions in number of particle scaling.
+- Add complete correlation matrix computation instead of the current specific ones.
+- Add property check on random variables (notably in the case where variance is zero).
+- Try to compile timers file for scaling into one and handle it accordingly?
 
 
 ## References
