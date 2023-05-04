@@ -21,4 +21,4 @@ plot 'sample_data/scaling.csv' using 1:3 notitle with linespoints
 set yrange [ 600 : 1800 ] noreverse nowriteback
 set title "CycleSync Average Time = f(n_{particles})"
 set output 'scaling_sync.png'
-plot 'sample_data/scaling.dat' using 1:4 notitle with linespoints
+plot 'sample_data/scaling.csv' using 1:4 notitle with linespoints
