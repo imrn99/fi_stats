@@ -1,4 +1,7 @@
-use std::fs::File;
+use std::{
+    fs::{File, OpenOptions},
+    io::Write,
+};
 
 use crate::{
     mapping::N_TALLIED_DATA,
@@ -58,4 +61,61 @@ pub fn read_timers(file_name: &str) -> [SummarizedVariable; 6] {
     }
 
     res
+}
+
+pub fn save_tracking_results(tracking_res: &[f64]) {
+    // The table is something like this
+    //
+    //               | Absorb | Scatter | Fission | Collision | Census | NumSeg
+    // CycleTracking | ...
+    //
+    let mut file = OpenOptions::new()
+        .write(true)
+        .create(true)
+        .truncate(true)
+        .open("tracking.dat")
+        .unwrap();
+    writeln!(file, ",Absorb,Scatter,Fission,Collision,Census,NumSeg").unwrap();
+    // write correlation coeffs
+    writeln!(
+        file,
+        "CycleTracking, {:.5}, {:.5}, {:.5}, {:.5}, {:.5}, {:.5}",
+        tracking_res[0],
+        tracking_res[1],
+        tracking_res[2],
+        tracking_res[3],
+        tracking_res[4],
+        tracking_res[5],
+    )
+    .unwrap();
+    // padding values for it to be considered a matrix
+    writeln!(file, "Dummy, 0, 0, 0, 0, 0, 0").unwrap();
+}
+
+pub fn save_popsync_results(popsync_res: &[f64]) {
+    // The table is something like this
+    //
+    //                   | Source | Rr | Split
+    // PopulationControl | ...
+    // CycleSync         | ...
+    //
+    let mut file = OpenOptions::new()
+        .write(true)
+        .create(true)
+        .truncate(true)
+        .open("popsync.dat")
+        .unwrap();
+    writeln!(file, ",Rr,Split").unwrap();
+    writeln!(
+        file,
+        "CycleSync, {:.5}, {:.5}",
+        popsync_res[1], popsync_res[2]
+    )
+    .unwrap();
+    writeln!(
+        file,
+        "PopulationControl, {:.5}, {:.5}",
+        popsync_res[4], popsync_res[5]
+    )
+    .unwrap();
 }
