@@ -106,7 +106,6 @@ fn main() {
         println!("+-------------+");
         println!("|Scaling Study|");
         println!("+-------------+");
-        scaling_help();
         // Get naming root
         print!("Name root of the timers report .csv file: ");
         stdout().flush().unwrap();
@@ -165,25 +164,4 @@ fn main() {
         compile_scaling_data(&timers);
     }
     println!("Finished! All data is ready for use.")
-}
-
-fn scaling_help() {
-    println!("CURRENTLY ONLY SUPPORTS LINEAR SCALING");
-    println!("GEOMETRIC PROGRESSION WILL BE ADDED IN THE FUTURE");
-    println!("This study requires the input files to fit a pattern for easy reading.");
-    println!("For example:");
-    println!("+>workspace");
-    println!("|");
-    println!("+--+>some_folder_with_data/");
-    println!("|  |");
-    println!("|  +--+timers_report10000.csv");
-    println!("|     +timers_report20000.csv");
-    println!("|     +timers_report30000.csv");
-    println!("|     +timers_report40000.csv");
-    println!("In this case:");
-    println!(" - the root is \"some_folder_with_data/timers_report\".");
-    println!(" - the starting number of particles is 10000");
-    println!(" - the step is 10000");
-    println!(" - the number of iteration is 4");
-    println!();
 }

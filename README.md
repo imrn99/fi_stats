@@ -29,7 +29,15 @@ supported computations:
   scale.
 
 The user will be prompted first on which computations he wishes to do, only then 
-will specific data be requested for processing.
+will specific data be requested for processing. Additionally, the user can 
+automatically provide inputs by redirecting a file to the program:
+
+```
+cargo run --release -- < sample_data/auto_input_example
+```
+
+The control flow being simple, it is easy to pre-write a set of answer to achieve 
+the desired results.
 
 ### Comparison Study
 
@@ -52,10 +60,26 @@ The user will be asked to provide four parameters for the program to run correct
 
 - The common root name of the multiple timers files
 - The number of particles in the first simulation
-- The step (common difference) defining the (arithmetic) progression
+- The step defining the progression
 - The number of iteration, i.e. the number of samples
 
-An example is given to the user at runtime to ensure clarity.
+Here is an example:
+
+```
++>workspace
+|
++--+>some_folder_with_data/
+|  |
+|  +--+timers_report10000.csv
+|     +timers_report20000.csv
+|     +timers_report30000.csv
+|     +timers_report40000.csv
+In this case:
+ - the root is "some_folder_with_data/timers_report".
+ - the starting number of particles is 10000
+ - the step is 10000
+ - the number of iteration is 4
+```
 
 ## TO-DO
 
