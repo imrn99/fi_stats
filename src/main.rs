@@ -35,6 +35,7 @@ fn main() {
         io::stdin()
             .read_line(&mut txt_input)
             .expect("Problem reading input.");
+        println!("{}", txt_input.trim());
     }
     let correlation = txt_input.trim() == "y";
 
@@ -46,6 +47,7 @@ fn main() {
         io::stdin()
             .read_line(&mut txt_input)
             .expect("Problem reading input.");
+        println!("{}", txt_input.trim());
     }
     let scaling = txt_input.trim() == "y";
 
@@ -61,7 +63,7 @@ fn main() {
         io::stdin()
             .read_line(&mut txt_input)
             .expect("Problem reading input.");
-        println!();
+        println!("{}", txt_input.trim());
         let old_timers = txt_input.trim().to_owned();
         txt_input.clear();
         // Get new report file
@@ -70,7 +72,7 @@ fn main() {
         io::stdin()
             .read_line(&mut txt_input)
             .expect("Problem reading input.");
-        println!();
+        println!("{}", txt_input.trim());
         let new_timers = txt_input.trim().to_owned();
         txt_input.clear();
 
@@ -91,7 +93,7 @@ fn main() {
         io::stdin()
             .read_line(&mut txt_input)
             .expect("Problem reading input.");
-        println!();
+        println!("{}", txt_input.trim());
         let tallies_report = txt_input.trim().to_owned();
         txt_input.clear();
 
@@ -114,7 +116,7 @@ fn main() {
         io::stdin()
             .read_line(&mut txt_input)
             .expect("Problem reading input.");
-        println!();
+        println!("{}", txt_input.trim());
         let root = txt_input.trim().to_owned();
         txt_input.clear();
         // get starting number of particles
@@ -123,7 +125,7 @@ fn main() {
         io::stdin()
             .read_line(&mut txt_input)
             .expect("Problem reading input.");
-        println!();
+        println!("{}", txt_input.trim());
         let n_start: usize = txt_input.trim().parse().unwrap();
         txt_input.clear();
         // get step
@@ -132,7 +134,7 @@ fn main() {
         io::stdin()
             .read_line(&mut txt_input)
             .expect("Problem reading input.");
-        println!();
+        println!("{}", txt_input.trim());
         let step: usize = txt_input.trim().parse().unwrap();
         txt_input.clear();
         // get number of iterations
@@ -141,7 +143,7 @@ fn main() {
         io::stdin()
             .read_line(&mut txt_input)
             .expect("Problem reading input.");
-        println!();
+        println!("{}", txt_input.trim());
         let n_iter: usize = txt_input.trim().parse().unwrap();
         txt_input.clear();
 
