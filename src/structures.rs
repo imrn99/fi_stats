@@ -33,6 +33,12 @@ pub enum TimerSV {
     CycleSync = 5,
 }
 
+#[derive(Debug, Clone, Copy)]
+pub enum ProgressionType {
+    Arithmetic,
+    Geometric,
+}
+
 #[derive(Debug)]
 pub struct FiniteDiscreteRV {
     pub values: Vec<f64>,
@@ -70,6 +76,11 @@ pub fn covariance(x: &FiniteDiscreteRV, y: &FiniteDiscreteRV) -> f64 {
 }
 
 pub fn correlation(x: &FiniteDiscreteRV, y: &FiniteDiscreteRV) -> f64 {
+    if (x.variance == 0.0) | (y.variance == 0.0) {
+        // 0 means variables are independent
+        // this may be technically false but it allows for generic computations
+        return 0.0;
+    }
     let cov = covariance(x, y);
     cov / (x.variance * y.variance).sqrt()
 }

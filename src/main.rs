@@ -1,20 +1,17 @@
 use std::io::{self, stdout, Write};
 
-use fi_stats::{
+use fastiron_stats::{
     io_utils::{
-        compile_scaling_data, read_tallies, read_timers, save_percents, save_popsync_results,
-        save_tracking_results,
+        compile_scaling_data, get_scaling_data, read_tallies, read_timers, save_percents,
+        save_popsync_results, save_tracking_results,
     },
     processing::{self, compare},
-    structures::TimerReport,
+    structures::ProgressionType,
 };
 
 fn main() {
     // Input handling
     let mut txt_input = String::new();
-
-    println!();
-    println!("What do we do?");
 
     while (txt_input.trim() != "y") & (txt_input.trim() != "n") {
         txt_input.clear();
@@ -35,6 +32,7 @@ fn main() {
         io::stdin()
             .read_line(&mut txt_input)
             .expect("Problem reading input.");
+        println!("{}", txt_input.trim());
     }
     let correlation = txt_input.trim() == "y";
 
@@ -46,6 +44,7 @@ fn main() {
         io::stdin()
             .read_line(&mut txt_input)
             .expect("Problem reading input.");
+        println!("{}", txt_input.trim());
     }
     let scaling = txt_input.trim() == "y";
 
@@ -61,7 +60,7 @@ fn main() {
         io::stdin()
             .read_line(&mut txt_input)
             .expect("Problem reading input.");
-        println!();
+        println!("{}", txt_input.trim());
         let old_timers = txt_input.trim().to_owned();
         txt_input.clear();
         // Get new report file
@@ -70,7 +69,7 @@ fn main() {
         io::stdin()
             .read_line(&mut txt_input)
             .expect("Problem reading input.");
-        println!();
+        println!("{}", txt_input.trim());
         let new_timers = txt_input.trim().to_owned();
         txt_input.clear();
 
@@ -91,7 +90,7 @@ fn main() {
         io::stdin()
             .read_line(&mut txt_input)
             .expect("Problem reading input.");
-        println!();
+        println!("{}", txt_input.trim());
         let tallies_report = txt_input.trim().to_owned();
         txt_input.clear();
 
@@ -107,15 +106,30 @@ fn main() {
         println!("+-------------+");
         println!("|Scaling Study|");
         println!("+-------------+");
-        scaling_help();
         // Get naming root
         print!("Name root of the timers report .csv file: ");
         stdout().flush().unwrap();
         io::stdin()
             .read_line(&mut txt_input)
             .expect("Problem reading input.");
-        println!();
+        println!("{}", txt_input.trim());
         let root = txt_input.trim().to_owned();
+        txt_input.clear();
+        // get progression type
+        while (txt_input.trim() != "a") & (txt_input.trim() != "g") {
+            txt_input.clear();
+            print!("Arithmetic or geometric progrssion? (a/g): ");
+            stdout().flush().unwrap();
+            io::stdin()
+                .read_line(&mut txt_input)
+                .expect("Problem reading input.");
+            println!("{}", txt_input.trim());
+        }
+        let progression = if txt_input.trim() == "a" {
+            ProgressionType::Arithmetic
+        } else {
+            ProgressionType::Geometric
+        };
         txt_input.clear();
         // get starting number of particles
         print!("Starting number of particles: ");
@@ -123,7 +137,7 @@ fn main() {
         io::stdin()
             .read_line(&mut txt_input)
             .expect("Problem reading input.");
-        println!();
+        println!("{}", txt_input.trim());
         let n_start: usize = txt_input.trim().parse().unwrap();
         txt_input.clear();
         // get step
@@ -132,7 +146,7 @@ fn main() {
         io::stdin()
             .read_line(&mut txt_input)
             .expect("Problem reading input.");
-        println!();
+        println!("{}", txt_input.trim());
         let step: usize = txt_input.trim().parse().unwrap();
         txt_input.clear();
         // get number of iterations
@@ -141,39 +155,13 @@ fn main() {
         io::stdin()
             .read_line(&mut txt_input)
             .expect("Problem reading input.");
-        println!();
+        println!("{}", txt_input.trim());
         let n_iter: usize = txt_input.trim().parse().unwrap();
         txt_input.clear();
 
         // Get data, process it, save results
-        let timers: Vec<TimerReport> = (0..n_iter)
-            .map(|idx| {
-                let filename = format!("{}{}.csv", root, n_start + idx * step);
-                read_timers(filename.as_ref())
-            })
-            .collect();
-        compile_scaling_data(&timers, n_start, step);
+        let timers = get_scaling_data(root, n_start, step, n_iter, progression);
+        compile_scaling_data(&timers);
     }
     println!("Finished! All data is ready for use.")
-}
-
-fn scaling_help() {
-    println!("CURRENTLY ONLY SUPPORTS LINEAR SCALING");
-    println!("GEOMETRIC PROGRESSION WILL BE ADDED IN THE FUTURE");
-    println!("This study requires the input files to fit a pattern for easy reading.");
-    println!("For example:");
-    println!("+>workspace");
-    println!("|");
-    println!("+--+>some_folder_with_data/");
-    println!("|  |");
-    println!("|  +--+timers_report10000.csv");
-    println!("|     +timers_report20000.csv");
-    println!("|     +timers_report30000.csv");
-    println!("|     +timers_report40000.csv");
-    println!("In this case:");
-    println!(" - the root is \"some_folder_with_data/timers_report\".");
-    println!(" - the starting number of particles is 10000");
-    println!(" - the step is 10000");
-    println!(" - the number of iteration is 4");
-    println!();
 }

@@ -4,7 +4,7 @@ use std::{
 };
 
 use crate::structures::{
-    FiniteDiscreteRV, SummarizedVariable, TimerReport, TimerSV, N_TALLIED_DATA,
+    FiniteDiscreteRV, ProgressionType, SummarizedVariable, TimerReport, TimerSV, N_TALLIED_DATA,
 };
 
 // =======
@@ -63,6 +63,25 @@ pub fn read_timers(file_name: &str) -> TimerReport {
     }
 
     TimerReport { timers_data: res }
+}
+
+pub fn get_scaling_data(
+    root: String,
+    n_start: usize,
+    step: usize,
+    n_iter: usize,
+    prog_type: ProgressionType,
+) -> Vec<(TimerReport, usize)> {
+    let n_particles = (0..n_iter).map(|idx| match prog_type {
+        ProgressionType::Arithmetic => n_start + idx * step,
+        ProgressionType::Geometric => n_start * step.pow(idx as u32),
+    });
+    n_particles
+        .map(|n_particle| {
+            let filename = format!("{}{}.csv", root, n_particle);
+            (read_timers(&filename), n_particle)
+        })
+        .collect()
 }
 
 // =======
@@ -141,7 +160,7 @@ pub fn save_popsync_results(popsync_res: &[f64]) {
     .unwrap();
 }
 
-pub fn compile_scaling_data(timer_data: &[TimerReport], n_start: usize, step: usize) {
+pub fn compile_scaling_data(timer_data: &[(TimerReport, usize)]) {
     let mut file = OpenOptions::new()
         .write(true)
         .create(true)
@@ -150,17 +169,16 @@ pub fn compile_scaling_data(timer_data: &[TimerReport], n_start: usize, step: us
         .unwrap();
     // we assume correct ordering of the summarized variables
     // i.e. lowest number of particle to highest
-    // also assume an arithmetic progression for n_particles
     writeln!(
         file,
         "n_particles,PopulationControlAvg,CycleTrackingAvg,CycleSyncAvg"
     )
     .unwrap();
-    timer_data.iter().enumerate().for_each(|(idx, report)| {
+    timer_data.iter().for_each(|(report, n_particles)| {
         writeln!(
             file,
             "{},{},{},{}",
-            n_start + idx * step,
+            n_particles,
             report[TimerSV::PopulationControl].mean,
             report[TimerSV::CycleTracking].mean,
             report[TimerSV::CycleSync].mean,
