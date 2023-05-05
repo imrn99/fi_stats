@@ -61,7 +61,6 @@ An example is given to the user at runtime to ensure clarity.
 
 - Add full support for geometric progressions in number of particle scaling.
 - Add complete correlation matrix computation instead of the current specific ones.
-- Add property check on random variables (notably in the case where variance is zero).
 - Try to compile timers file for scaling into one and handle it accordingly?
 
 
