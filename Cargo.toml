@@ -1,5 +1,5 @@
 [package]
-name = "fi_stats"
+name = "fastiron-stats"
 version = "1.0.0"
 edition = "2021"
 
