@@ -33,6 +33,12 @@ pub enum TimerSV {
     CycleSync = 5,
 }
 
+#[derive(Debug, Clone, Copy)]
+pub enum ProgressionType {
+    Arithmetic,
+    Geometric,
+}
+
 #[derive(Debug)]
 pub struct FiniteDiscreteRV {
     pub values: Vec<f64>,

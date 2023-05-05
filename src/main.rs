@@ -2,19 +2,16 @@ use std::io::{self, stdout, Write};
 
 use fastiron_stats::{
     io_utils::{
-        compile_scaling_data, read_tallies, read_timers, save_percents, save_popsync_results,
-        save_tracking_results,
+        compile_scaling_data, get_scaling_data, read_tallies, read_timers, save_percents,
+        save_popsync_results, save_tracking_results,
     },
     processing::{self, compare},
-    structures::TimerReport,
+    structures::ProgressionType,
 };
 
 fn main() {
     // Input handling
     let mut txt_input = String::new();
-
-    println!();
-    println!("What do we do?");
 
     while (txt_input.trim() != "y") & (txt_input.trim() != "n") {
         txt_input.clear();
@@ -119,6 +116,22 @@ fn main() {
         println!("{}", txt_input.trim());
         let root = txt_input.trim().to_owned();
         txt_input.clear();
+        // get progression type
+        while (txt_input.trim() != "a") & (txt_input.trim() != "g") {
+            txt_input.clear();
+            print!("Arithmetic or geometric progrssion? (a/g): ");
+            stdout().flush().unwrap();
+            io::stdin()
+                .read_line(&mut txt_input)
+                .expect("Problem reading input.");
+            println!("{}", txt_input.trim());
+        }
+        let progression = if txt_input.trim() == "a" {
+            ProgressionType::Arithmetic
+        } else {
+            ProgressionType::Geometric
+        };
+        txt_input.clear();
         // get starting number of particles
         print!("Starting number of particles: ");
         stdout().flush().unwrap();
@@ -148,13 +161,8 @@ fn main() {
         txt_input.clear();
 
         // Get data, process it, save results
-        let timers: Vec<TimerReport> = (0..n_iter)
-            .map(|idx| {
-                let filename = format!("{}{}.csv", root, n_start + idx * step);
-                read_timers(filename.as_ref())
-            })
-            .collect();
-        compile_scaling_data(&timers, n_start, step);
+        let timers = get_scaling_data(root, n_start, step, n_iter, progression);
+        compile_scaling_data(&timers);
     }
     println!("Finished! All data is ready for use.")
 }

@@ -59,7 +59,6 @@ An example is given to the user at runtime to ensure clarity.
 
 ## TO-DO
 
-- Add full support for geometric progressions in number of particle scaling.
 - Add complete correlation matrix computation instead of the current specific ones.
 - Try to compile timers file for scaling into one and handle it accordingly?
 
